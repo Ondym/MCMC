@@ -16,7 +16,7 @@ and their subsequent possibility of forming a chain connecting
 the top and bottom, see the image lower). Plot this value with respect
 to temperature. 
 
-![Example of a square with the percolation highlighted.](/imgs/perkolace.png)
+![Example of a square with the percolation highlighted.](/imgs/perkolace-centered.png)
 
 ## The results
 
