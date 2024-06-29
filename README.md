@@ -13,9 +13,11 @@ This project deals with the problem of sampling from a predetermined Boltzmann d
 ## The results
 
 1. Plot the dependence of the average energy on temperature.
-2. Let be the number of connected black regions. Plot the
-dependence of the expected value of and the temperature.
-3) Let be the probability of percolations (forming of clusters
+2. Let _C_ be the number of connected black regions. Plot the
+dependence of the expected value of _C_ and the temperature.
+3. Let _L_ be the probability of percolations (forming of clusters
 and their subsequent possibility of forming a chain connecting
-the top and bottom see Figure 4). We plot this value with respect
+the top and bottom, see the image lower). Plot this value with respect
 to temperature. 
+
+![Example of a square with the percolation highlighted.](/imgs/perkolace.png)
