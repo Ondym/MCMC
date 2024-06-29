@@ -1,6 +1,6 @@
 # MCMC
 
-Here are the files created during the TV@J within the MCMC miniproject. The results and the math behind the contents of this repository are [here](https://tydenvedy.fjfi.cvut.cz/fyztyd/fyztyd/uploadsb/files/montemarkov_xx_180624_2316.pdf).
+Here are the files created during the TV@J within the MCMC miniproject. The results and the math behind the contents of this repository are [here (CZE)](https://tydenvedy.fjfi.cvut.cz/fyztyd/fyztyd/uploadsb/files/montemarkov_xx_180624_2316.pdf).
 
 ## The idea behind the project
 
@@ -18,10 +18,18 @@ to temperature.
 
 ![Example of a square with the percolation highlighted.](/imgs/perkolace-centered.png)
 
-## The results
+## The methods used
+
+Due to the numerical nature of this problem we used Python to do all the operations and simulations. We than displayed the obtained data using matplotlib.
 
 We processed the results by forgetting the first 10% of 10 million iterations. Individualaverages are indicated by points in the graphs, the shaded areas indicate the standarddeviation at each point.
 
-In solving the first problem we obtained, using a special code, the relation in the image lower which shows a rapid increase in energy at the boundary of low and higher temperatures and then a much slower growth in the high and low temperatures respectively. In the second problem we attained the graph in Figure 7. We can see that the growth is very similar to the previous curve so they must be related. Lastly, in the third problem we got a much less clear result. However, we can still make out a apparent decrease in percolation probability with temperature. 
+## The results
+
+__The results are described in higher detail in the official paper linked in the beginning of this README.__
+
+In solving the first problem we obtained, using a the code in [this file](python-main/energie_na_teplote.py), the relation in the image lower which shows a rapid increase in energy at the boundary of low and higher temperatures and then a much slower growth in the high and low temperatures respectively. We can see that the growth is very similar to the previous curve so they must be related. Lastly, in the third problem we got a much less clear result. However, we can still make out a apparent decrease in percolation probability with temperature. All of these results and their corresponding graphs are included and described in the paper linked above.
 
 ![12 final states with growing temperature](imgs/deconstructed-gif.png)
+
+An interesting observation we made was that the energy of a grid with randomly generated 1s and 0s is n^2, where n is the size of the square grid (n by n, in our case n=256). Not only is this interesting by itself, but as the temperature grows, the grid approaches this random gray noise. This suggests that the energy of a grid at high temperature T should be n^2, which aligns with the graph presented in our paper. This observation can also be supported analytically.

@@ -1,63 +1,117 @@
-from random import randint
-import math
-import matplotlib.pyplot as plt
-import numpy as np
+import os
+import shutil
+import tkinter as tk
+from PIL import Image, ImageTk
 
-iterations = 2000000
-list_l = 256
-list_energii = np.array([])
-list_energii_ = []
-T=1
-#list = [[randint(0, 1) for i in range(list_l)] for j in range(list_l)]
-list = [[0 for i in range(list_l)] for j in range(list_l)]
-def pi(E, T):
-    return math.exp(-E/T)
+def display_images(subdir, images, filenames):
+    """
+    Display images in a maximized tkinter window with wrapping and labels.
+    """
+    result = {"choice": None}  # Dictionary to hold the result
 
-energie = 0
-for i in range(len(list)):
-    for j in range(len(list[i])):
-        if list[i][j] != list[i][(j+1)%list_l]:
-            energie+=1
-        if list[i][j] != list[(i+1)%list_l][j]:
-            energie+=1
+    def delete():
+        result["choice"] = "delete"
+        root.quit()
 
-for h in range(iterations):
-    if h%(iterations * .1)==0:
-        print(h)
-    l_i = randint(0, list_l-1)
-    l_j = randint(0,list_l-1)
-    a = (list[l_i][l_j]+1)%2
+    def keep():
+        result["choice"] = "keep"
+        root.quit()
 
-    k = 0
-    for i in [-1,1]:
-        if a == list[(l_i+i)%list_l][(l_j)%list_l]:
-            k-=1
+    root = tk.Tk()
+    root.title("Image Viewer")
+    root.state('zoomed')  # Maximize the window
+
+    # Create a frame for the images
+    frame = tk.Frame(root)
+    frame.pack(expand=True, fill=tk.BOTH)
+    
+    # Display subdirectory name at the top center
+    subdir_label = tk.Label(frame, text=subdir, font=("Arial", 24))
+    subdir_label.pack()
+
+    # Create a canvas to allow scrolling
+    canvas = tk.Canvas(frame)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    # Add a scrollbar
+    scrollbar = tk.Scrollbar(frame, command=canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    # Create another frame inside the canvas
+    image_frame = tk.Frame(canvas)
+    canvas.create_window((0, 0), window=image_frame, anchor='nw')
+
+    # Load and display each image
+    photos = []
+    max_width = 150
+    max_height = 150
+
+    row, col = 0, 0
+    for img, filename in zip(images, filenames):
+        img.thumbnail((max_width, max_height))
+        photo = ImageTk.PhotoImage(img)
+        photos.append(photo)
+
+        # Create frame for each image and its label
+        img_container = tk.Frame(image_frame)
+        img_container.grid(row=row, column=col, padx=5, pady=5)
+
+        # Display image
+        img_label = tk.Label(img_container, image=photo, borderwidth=0, highlightthickness=0)
+        img_label.pack()
+
+        # Display filename under the image
+        file_label = tk.Label(img_container, text=os.path.splitext(filename)[0], font=("Arial", 12))
+        file_label.pack()
+
+        col += 1
+        if col > (canvas.winfo_width() // max_width) - 1:
+            col = 0
+            row += 1
+
+    # Add buttons for delete and keep
+    btn_frame = tk.Frame(root)
+    btn_frame.pack()
+    button_font = ("Arial", 16)
+    delete_btn = tk.Button(btn_frame, text="Delete", command=delete, width=10, height=2, font=button_font)
+    keep_btn = tk.Button(btn_frame, text="Keep", command=keep, width=10, height=2, font=button_font)
+    delete_btn.pack(side="left", padx=20)
+    keep_btn.pack(side="right", padx=20)
+
+    # Update the scrollregion of the canvas
+    image_frame.update_idletasks()
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+    root.mainloop()
+    root.destroy()
+
+    return result["choice"]
+
+def process_subdirectories(directory):
+    """
+    Process each subdirectory in the given directory.
+    """
+    subdirectories = [os.path.join(directory, d) for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))]
+
+    for subdir in subdirectories:
+        # Get all image files in the subdirectory and sort them alphabetically
+        image_files = sorted([f for f in os.listdir(subdir) if f.lower().endswith(('png', 'jpg', 'jpeg'))])
+        
+        # Load all images
+        images = [Image.open(os.path.join(subdir, img)) for img in image_files]
+
+        # Display images and get user choice
+        choice = display_images(os.path.basename(subdir), images, image_files)
+        
+        # Handle user choice
+        if choice == "delete":
+            # Delete the subdirectory and its contents
+            shutil.rmtree(subdir)
+            print(f"Deleted {subdir}")
         else:
-            k+=1
-        if a == list[(l_i)%list_l][(l_j+i)%list_l]:
-            k-=1
-        else:
-            k+=1
+            print(f"Kept {subdir}")
 
-    #if randint(0, 100000)/100000 <= pi(energie + k, T)/pi(energie, T):
-    if randint(0, 100000)/100000 <= pi(k, T):
-            list[l_i][l_j] = a
-            energie += k
-            #print(energie)
-            #list_energii=np.append(list_energii, energie)
-            list_energii_.append(energie)
-
-x = np.linspace(0,iterations, num=len(list_energii_))
-y = np.array(list_energii_)
-
-fig, ax = plt.subplots()
-
-mean = np.mean(list_energii_[int(len(list_energii_) * .1):])
-
-ax.plot(x, y, linewidth=2.0)
-ax.axhline(y = mean, color='r', linestyle='--', linewidth=1)
-
-plt.xlabel("Number of iterations")
-plt.ylabel("Energy")
-
-plt.show()
+# Example usage
+directory_path = 'images-day2'  # Replace with your directory path
+process_subdirectories(directory_path)

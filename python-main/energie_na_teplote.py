@@ -11,6 +11,7 @@ from datetime import datetime
 
 """
  samples je mozny vyplnit i treba for cyklem, je to seznam hodnot T
+
  flags je seznam indexu, kolikaty T ze samples dostane obrazek
 """
 
@@ -25,9 +26,9 @@ skipCount = iterations * .1
 
 samples = [0.1, 0.5, 0.8, 1, 1.1, 1.5, 2]
 
-flags = [0,1,2,3,4,5,6,7,8]
+flags = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-print("# of samples: ", len(samples))
+print("Number of samples: ", len(samples))
 
 def pi(E, T):
     if -E/T > 1:
@@ -36,7 +37,7 @@ def pi(E, T):
     return math.exp(-E / T)
 
 timestamp = datetime.now().strftime("%H_%M_%S")
-def create_grid_image(array, output_dir='images', output_file='grid_image.png'):
+def create_grid_image(array, output_dir='generated-images', output_file='grid_image.png'):
     dir_path = os.path.join(output_dir, timestamp)
     os.makedirs(dir_path, exist_ok=True)
 
