@@ -8,10 +8,6 @@ This project deals with the problem of sampling from a predetermined Boltzmann d
 
 ## The problems to solve
 
-
-
-## The results
-
 1. Plot the dependence of the average energy on temperature.
 2. Let _C_ be the number of connected black regions. Plot the
 dependence of the expected value of _C_ and the temperature.
@@ -21,3 +17,7 @@ the top and bottom, see the image lower). Plot this value with respect
 to temperature. 
 
 ![Example of a square with the percolation highlighted.](/imgs/perkolace.png)
+
+## The results
+
+![12 final states with growing temperature](imgs/deconstructed-gif.png)
