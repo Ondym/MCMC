@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCMC</title>
+    <script src="p5.min.js"></script>
+    <script src="script.js"></script>
+    <script src="array.js"></script>
+
+    <style>
+        *{
+            overflow-y: hidden;
+        }
+
+        body{
+            padding: 10vh 0 0 0;
+            /* height: 100vh; */
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            color: #fff;
+            align-items: center;
+            background: #098842;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        canvas{
+            border: 1px solid #ccc;
+        }
+
+        .data-char{
+            text-align: left;
+            padding: 0 5vw 0 0;;
+        }
+
+        h2{
+            padding: .4em .5em;
+            margin: 0;
+        }
+
+        h1{
+            padding: 0;
+            margin: .8em 0 0 0;
+        }
+
+        #avg-tit{
+            border: 1px solid #fff;
+        }
+
+        .header{
+            top: 0;
+            width: 100%;
+            position: fixed;
+            padding: 3.5vh 4vw;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Velikost gridu 100x100. Stisknutím [ENTER] togglujete mezi barevným rozřazením blobů. Kliknutím myší na bod se zvýrazní celý jeho blob.
+    </div>
+    <div class="data-char">
+        <h1>Aktuální kolo</h1>
+        <h2 id="tit">Bez poskytnutých dat</h2>
+
+        <h1>Průměr dosavadních kol</h1>
+        <h2 id="avg-tit">Bez poskytnutých dat</h2>
+    </div>
+</body>
+</html>
