@@ -15,7 +15,7 @@ from datetime import datetime
  flags je seznam indexu, kolikaty T ze samples dostane obrazek
 """
 
-iterations = 10**7
+iterations = 10**10
 list_l = 256
 list_energii = np.array([])
 list_energii_ = []
@@ -24,9 +24,9 @@ T = 5
 list_T = []
 skipCount = iterations * .1
 
-samples = [0.1, 0.5, 0.8, 1, 1.1, 1.5, 2]
+samples = [0.0000001]
 
-flags = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+flags = [0]
 
 print("Number of samples: ", len(samples))
 
@@ -60,7 +60,7 @@ def create_grid_image(array, output_dir='generated-images', output_file='grid_im
     print(f"Image saved as {file_path}")
 
 for hh in samples:
-    print(str(hh))
+    # print(str(hh))
     list = [[randint(0, 1) for i in range(list_l)] for j in range(list_l)]
     T = hh
     list_energii_ = []

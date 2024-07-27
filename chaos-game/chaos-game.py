@@ -1,95 +1,93 @@
 import pygame
-import math
 import random
+import sys
+import datetime
 
-"""
- Tohle je program simulujici chaos game (https://en.wikipedia.org/wiki/Chaos_game), coz je generalizovana verze
- naseho Sierpinskiho trojuhelniku. Jelikoz je mnoho verzi chaos game a zalezi, cim se bude ridit (pocet vertexu,
- koeficient lerpu, pravidlo vybirani vrcholu...), vsechno je na ty strance na Wikipedii.
-
- Muzete se pokusit o nejaky zakladni zmeny parametru, treba ve funkci setup(), nebo o pravidlo vyberu vrcholu na 
- radku 74 (v_index), ale pokud si nejste uplne jisty a nebo chcete aby to bylo/nebylo nejak animovany, urcite doporucuju
- proste to zkopirovat a napsat ChatGPT, protoze tak jsem delal animace ja kdyz jsem je chtel nejak videt. Kdyby jste chteli
- nejakou inspiraci, tak ja jsem se treba koukal jak se to meni s poctem vrcholu, koeficientem lerpu (doporucuju menit
- ho, snizit pocet bodu generovanych v kazdym kole a nastavit erase=False)...
-"""
-
+# Initialize Pygame
 pygame.init()
 
-width, height = 550, 550
+# Set up display
+width, height = 800, 600
 window = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Fractal Pattern')
+pygame.display.set_caption("Chaos Game")
 
-white = (255, 255, 255)
-blue = (50, 50, 250)
-black = (0, 0, 0)
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
 
-font = pygame.font.SysFont(None, 24)
+# Vertex and point lists
+vertexes = [(400, 100), (200, 500), (600, 500)]
+points = []
 
-def gen_new_point(last_point, target_point, coeff):
-    new_x = last_point[0] + (target_point[0] - last_point[0]) * coeff
-    new_y = last_point[1] + (target_point[1] - last_point[1]) * coeff
-    return (new_x, new_y)
+# Function to draw everything
+def draw():
+    window.fill(WHITE)
+    
+    # Draw vertexes
+    for vertex in vertexes:
+        pygame.draw.circle(window, RED, vertex, 5)
+    
+    # Draw points
+    for point in points:
+        pygame.draw.circle(window, BLACK, point, 1)
 
-def setup(vertex_count):
-    unit = 250
-    rotation = math.pi * (1 / vertex_count + 0.5)
+    pygame.display.flip()
 
-    vertexes = [
-        (
-            math.cos(2 * math.pi / vertex_count * i + rotation) * unit,
-            math.sin(2 * math.pi / vertex_count * i + rotation) * unit
-        )
-        for i in range(vertex_count)
-    ]
+# Function to generate the next point
+def generate_point():
+    if not points:
+        return random.choice(vertexes)
+    last_point = points[-1]
+    next_vertex = random.choice(vertexes)
+    new_point = ((last_point[0] + next_vertex[0]) // 2, (last_point[1] + next_vertex[1]) // 2)
+    return new_point
 
-    return vertexes
+# Function to save the current screen as an image
+def save_image():
+    current_time = datetime.datetime.now().strftime("%H_%M_%S")
+    filename = f"chaos-game/gen-imgs/{current_time}.png"
+    pygame.image.save(window, filename)
+    print(f"Image saved as {filename}")
 
-def main():
-    running = True
-    window.fill(white)
-    vertex_count = 2
-    last_point = [0, 0]
-    v_index = 0
-    frame_count = 0
-    erase = False
-    coeff = 1 / 2
+    
 
-    while running:
-        # Handle events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+# Main loop
+running = True
+moving_vertex = None
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            break
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:  # Left click
+                for i, vertex in enumerate(vertexes):
+                    if pygame.Rect(vertex[0]-5, vertex[1]-5, 10, 10).collidepoint(event.pos):
+                        moving_vertex = i
+                        break
+            elif event.button == 3:  # Right click
+                vertexes.append(event.pos)
+                points = []  # Reset points
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                moving_vertex = None
+        elif event.type == pygame.MOUSEMOTION:
+            if moving_vertex is not None:
+                vertexes[moving_vertex] = event.pos
+                points = []  # Reset points
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_s:
+                save_image()
 
-        if frame_count % 80 == 0:
-            vertex_count += 1
-            vertexes = setup(vertex_count)
-            last_point = list(vertexes[0])
-            window.fill(white) # TOHLE SE KLIDNE MUZE SMAZAT A NASTAVIT erase=True, rozdil je ocividny
+    # Generate new points
+    if len(points) < 3*10**5:  # Limit the number of points for performance
+        for _ in range(100):
+            points.append(generate_point())
 
-        if erase:
-            window.fill(white)
+    # Draw everything
+    draw()
 
-        for _ in range(10000):
-            v_index = (v_index + random.randint(1, 3)) % len(vertexes)
-            last_point = gen_new_point(last_point, vertexes[v_index], coeff)
-            pygame.draw.circle(window, blue, (int(last_point[0] + width / 2), int(last_point[1] + height / 2)), 1)
-
-        for i in range(len(vertexes)):
-            pygame.draw.line(window, black,
-                             (vertexes[i][0] + width / 2, vertexes[i][1] + height / 2),
-                             (vertexes[(i + 1) % len(vertexes)][0] + width / 2, vertexes[(i + 1) % len(vertexes)][1] + height / 2))
-
-        vertex_text = font.render(f'Vertex Count: {vertex_count}', True, black)
-        window.blit(vertex_text, (10, 10))
-
-        pygame.display.flip()
-
-        frame_count += 1
-
-        pygame.time.delay(10)
-
-    pygame.quit()
-
-if __name__ == "__main__":
-    main()
+# Quit Pygame
+pygame.quit()
+sys.exit()

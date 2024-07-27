@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from matplotlib import ticker
 import numpy as np
 
-
 iterations = 1000
 iterations_T = 30
 list_l = 50

@@ -17,7 +17,7 @@ the top and bottom, see the image lower). Plot this value with respect
 to temperature. 
 
 ![Example of a square with the percolation highlighted.](/imgs/perkolace-centered.png)
-
+ 
 ## The methods used
 
 Due to the numerical nature of this problem we used Python to do all the operations and simulations. We than displayed the obtained data using matplotlib.
