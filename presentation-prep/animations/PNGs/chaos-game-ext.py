@@ -1,8 +1,9 @@
 import pygame
 import math
 import random
-import datetime, os, re
-from additional_funcs import opt_r
+import os, re
+from additional_funcs import *
+import matplotlib.pyplot as plt
 
 """
  Tohle je program simulujici chaos game (https://en.wikipedia.org/wiki/Chaos_game), coz je generalizovana verze
@@ -24,44 +25,16 @@ width, height = 550, 550
 window = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Fractal Pattern')
 
+opacity = 255
+
 white = (255, 255, 255)
-blueTranslucent = (50, 50, 250, 255)
+translucent = (250, 180, 50, opacity)
 black = (0, 0, 0)
 
-point_surface = pygame.Surface((1, 1), pygame.SRCALPHA)
-point_surface.fill(blueTranslucent)
+# point_surface = pygame.Surface((1, 1), pygame.SRCALPHA)
+# point_surface.fill(translucent)
 
 font = pygame.font.SysFont(None, 24)
-
-def save_image(vc, c):
-    c = f"{c:.3g}"
-    des_dir = f"chaos-game/gen-imgs/ext_rul_{session_id}"
-    md = os.path.join(des_dir, 'params.md')
-    
-    if not os.path.exists(des_dir):
-        os.mkdir(des_dir)
-        content = f"""## Chaos game\n### Session parameters\n\nCoefficient of LERP: r={c}\nSingle point opacity: {blueTranslucent[3]}/255\n\n*Rule for choosing the next vertex:*\nThe last chosen vertex NEZADANO _(n+NEZADANO)_\n### Images generated"""
-        
-        with open(md, 'w') as file:
-            file.write(content.strip())
-        print(f"Created file: {md}")
-
-    filename = f"vc{vc}_c{c}.png"
-    pygame.image.save(window, os.path.join(des_dir, filename))
-    print(f"Image saved as {filename}")
-
-    if not os.path.exists(md):
-        print(f"File {md} does not exist.")
-        return
-
-    if not os.path.exists(os.path.join(des_dir, filename)):
-        return
-
-    image_description = f"""\n![Coefficient: {c} Vertex count: {vc}]({filename})"""
-
-    with open(md, 'a') as file:
-        file.write("\n\n" + image_description.strip())
-    print(f"Added image description to {md}")
 
 def gen_new_point(last_point, target_point, coeff):
     new_x = last_point[0] + (target_point[0] - last_point[0]) * coeff
@@ -69,7 +42,7 @@ def gen_new_point(last_point, target_point, coeff):
     return (new_x, new_y)
 
 def setup(vertex_count):
-    unit = 250
+    unit = 5
     rotation = math.pi * (1 / vertex_count + 0.5)
 
     vertexes = [
@@ -95,17 +68,20 @@ def last_dir(directory):
 
     return highest_number
 
+def get_color(value, colormap='viridis'):
+    cmap = plt.get_cmap(colormap)
+    return cmap(value)
 
 def main():
     running = True
     window.fill(white)
-    vertex_count = 4
+    vertex_count = 3
     last_point = [0, 0]
     v_index = 0
     frame_count = 0
     erase = False
-    auto_save = True#user_auto_save == "y"
-    coeff = 1/2
+    auto_save = False#user_auto_save == "y"
+    coeff = 0.1
 
     while running:
         # Handle events
@@ -114,35 +90,49 @@ def main():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    save_image(vertex_count, coeff)
+                    save_image(vertex_count, coeff, session_id, window, opc=opacity)
 
-        if frame_count % 80 == 0:
-            if (auto_save and frame_count > 0):
-                save_image(vertex_count, coeff)
+        if frame_count % 5000000 == 0:
+            if (frame_count > 0):
+                # vertex_count += 1
+                if auto_save:
+                    save_image(vertex_count, coeff, session_id, window, opc=opacity)
 
-            vertex_count += 1
             vertexes = setup(vertex_count)
-            coeff = opt_r(vertex_count)
+            # coeff += 0.02
+            # coeff = opt_r(vertex_count)
             last_point = list(vertexes[0])
             window.fill(white) # TOHLE SE KLIDNE MUZE SMAZAT A NASTAVIT erase=True, rozdil je ocividny
+
+            if (frame_count == 0 or True):
+                colors = []
+                
+                for i in range(1):
+                    colors.append(pygame.Surface((2, 2), pygame.SRCALPHA))
+                    C = get_color(i/(vertex_count - 1))
+                    C = (int(C[0] * 255), int(C[1] * 255), int(C[2] * 255), int(opacity))
+                    colors[i].fill(translucent)
+
 
             vertex_text = font.render(f'Vertex Count: {vertex_count}', True, black)
             coeff_text = font.render(f'Coefficient: {coeff:.3g}', True, black)
             window.blit(vertex_text, (10, 10))
             window.blit(coeff_text, (10, 27))
+    
+            offset_y = 80 * (vertex_count%2) * (2**int(-vertex_count/2))
 
 
         if erase:
             window.fill(white)
 
-        # this is just so the images look more to the center
-        offset_y = 80 * (vertex_count%2) * (2**int(-vertex_count/2))
 
-        for _ in range(15000):
-            # while v_index
-            v_index = (v_index + random.randint(1, vertex_count)) % len(vertexes) #################### THE RULE #####################
+        # this is just so the images look more to the center
+
+        for _ in range(1):
+            v_index = (v_index + random.randint(1, (vertex_count))) % len(vertexes) #################### THE RULE #####################
             last_point = gen_new_point(last_point, vertexes[v_index], coeff)
-            window.blit(point_surface, (int(last_point[0] + width / 2), int(last_point[1] + height / 2 + offset_y)))
+            print(last_point)
+            window.blit(colors[min(len(colors)-1, v_index)], (int(last_point[0] + width / 2), int(last_point[1] + height / 2 + offset_y)))
 
         for i in range(len(vertexes)):
             pygame.draw.line(window, black,
@@ -158,6 +148,7 @@ def main():
     pygame.quit()
 
 session_id = last_dir("chaos-game/gen-imgs") + 1
+# viridis = mpl.colormaps['viridis'].resampled(8)
 
 if __name__ == "__main__":
     main()

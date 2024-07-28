@@ -6,7 +6,12 @@ Single point opacity: 255/255
 
 __Rule for choosing the next vertex:__
 Any vertex ```(randint(0, vertexCount))```
+Colored by the chosen  vertex
 ### Images generated
+
+![Coefficient: 0.5 Vertex count: 3](vc3_c0.5.png)
+
+![Coefficient: 0.5 Vertex count: 4](vc4_c0.5.png)
 
 ![Coefficient: 0.618 Vertex count: 5](vc5_c0.618.png)
 
@@ -19,9 +24,3 @@ Any vertex ```(randint(0, vertexCount))```
 ![Coefficient: 0.742 Vertex count: 9](vc9_c0.742.png)
 
 ![Coefficient: 0.764 Vertex count: 10](vc10_c0.764.png)
-
-![Coefficient: 0.778 Vertex count: 11](vc11_c0.778.png)
-
-![Coefficient: 0.789 Vertex count: 12](vc12_c0.789.png)
-
-![Coefficient: 0.806 Vertex count: 13](vc13_c0.806.png)

@@ -3,9 +3,8 @@
 
 coefficient of LERP: c=0.5
 
-*Rule for choosing the next vertex:*
-The last chosen vertex any vertex except the previous one _(n+randint(1, vertexCount))_
-The vertex loops around (%)
+__Rule for choosing the next vertex:__
+Any vertex except the previous one ```(n+randint(1, vertexCount))```
 ### Images generated
 
 ![Coefficient: 0.5 Vertex count: 3](vc3_c0.5.png)

@@ -32,6 +32,6 @@ def list_directory_contents(path, indent=''):
         list_directory_contents(os.path.join(path, directory), indent + '  ')
 
 # Specify the directory path here
-directory_path = 'C:/Users/ondra/Documents/Fun/Maths/MonteCarlo/project/'
+directory_path = 'python-main/..'
 print(f"Directory tree for: {directory_path}")
 list_directory_contents(directory_path)

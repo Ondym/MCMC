@@ -4,8 +4,8 @@
 Coefficient of LERP: c=0.5
 Single point opacity: 35/255
 
-*Rule for choosing the next vertex:*
-The last chosen vertex and its 4 neigbours _(n+randint(-2, 2))_
+__Rule for choosing the next vertex:__
+The last chosen vertex and its 4 neigbours ```(n+randint(-2, 2))```
 ### Images generated
 
 ![Coefficient: 0.5 Vertex count: 3](vc3_c0.5.png)
