@@ -52,9 +52,5 @@ You can read about he basics on the [chaos game Wikipedia page](https://en.wikip
 
 ## My execution
 I've generated the images using my [Python script](chaos-game/chaos-game-ext.py) and sagved them in the [gen-imgs folder](chaos-game/gen-imgs). I've also created the Chaos game explorer to help go throught everything. It has its own [documentation](chaos-game/ch-g-explorer/usage.md) in case of any confusion. Here are some of the images generated:
-![alt text](chaos-game/gen-imgs/ext_rul_16/vc8_c0.5.png)
-![alt text](chaos-game/gen-imgs/ext_rul_16/vc6_c0.5.png)
-![alt text](chaos-game/gen-imgs/ext_rul_15/vc7_c0.5.png)
-![alt text](chaos-game/gen-imgs/ext_rul_2/vc4_c0.5.png)
-![alt text](chaos-game/gen-imgs/ext_rul_1/vc5_c0.5.png)
-![alt text](chaos-game/gen-imgs/ext_rul_8/vc9_c0.742.png)
+
+![A few example generation images](poster/imgs/chaos-game-readme-exm.png)
