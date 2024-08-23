@@ -33,3 +33,28 @@ In solving the first problem we obtained, using a the code in [this file](/poste
 ![12 final states with growing temperature](/poster/imgs/deconstructed-gif.png)
 
 An interesting observation we made was that the energy of a grid with randomly generated 1s and 0s is n^2, where n is the size of the square grid (n by n, in our case n=256). Not only is this interesting by itself, but as the temperature grows, the grid approaches this random gray noise. This suggests that the energy of a grid at high temperature T should be n^2, which aligns with the graph presented in our paper. This observation can also be supported analytically.
+
+# The Chaos Game
+
+While preparing fo the FIHS conference I came along a very visually interesting thing called the _chaos game_. It creates beatiful patterns from randomness. It can be described as a  discrete time Markov chain with continuous state spac (ℝ²). The simplest example is the Sierpinski triangle.
+
+![Image of the Sierpinski triangle, a nested triangle fractal](/chaos-game/gen-imgs/sierpinskis/sierpinski.png)
+
+You can read about he basics on the [chaos game Wikipedia page](https://en.wikipedia.org/wiki/Chaos_game), but basically the three parameters impacting the final result are:
+
+1. __The polygon vertex count (N):__ This is pretty straightforward, the shape from which the game is "bouncing". I've only worked with regular polygons.
+2. __The coefficient of LERP (r):__ How far from the last generated point to the chosen polygon vertex is the next point going to be generated. I've mostly used r=0.5.
+3. __The choice rule:__ This one is the most interesting and also mystical of sorts. It defines which vertexes can be chosen each round. The rule can be anything, so here are a few examples:
+    + Any vertex except the last one chosen
+    + The direct neighbours of the last chosen vertex
+    + Any vertex from the half of vertexes following the last chosen vertex 
+    + Any vertex except the one before the last chosen vertex
+
+## My execution
+I've generated the images using my [Python script](chaos-game/chaos-game-ext.py) and sagved them in the [gen-imgs folder](chaos-game/gen-imgs). I've also created the Chaos game explorer to help go throught everything. It has its own [documentation](chaos-game/ch-g-explorer/usage.md) in case of any confusion. Here are some of the images generated:
+![alt text](chaos-game/gen-imgs/ext_rul_16/vc8_c0.5.png)
+![alt text](chaos-game/gen-imgs/ext_rul_16/vc6_c0.5.png)
+![alt text](chaos-game/gen-imgs/ext_rul_15/vc7_c0.5.png)
+![alt text](chaos-game/gen-imgs/ext_rul_2/vc4_c0.5.png)
+![alt text](chaos-game/gen-imgs/ext_rul_1/vc5_c0.5.png)
+![alt text](chaos-game/gen-imgs/ext_rul_8/vc9_c0.742.png)
