@@ -15,9 +15,9 @@ pygame.display.set_caption('Fractal Pattern')
 
 opacity = 25
 
-bg_color = (255 * 0.2, 255 * 0.2, 255 * 0.2)
-translucent = (255, 255,255, opacity)
-fg_color = (255 - bg_color[0], 255 - bg_color[1], 255 - bg_color[2])
+white = (255, 255, 255)
+translucent = (250, 180, 50, opacity)
+black = (0, 0, 0)
 
 # point_surface = pygame.Surface((1, 1), pygame.SRCALPHA)
 # point_surface.fill(translucent)
@@ -30,7 +30,7 @@ def gen_new_point(last_point, target_point, coeff):
     return (new_x, new_y)
 
 def setup(vertex_count):
-    unit = 250
+    unit = 100
     rotation = math.pi * (1 / vertex_count + 0.5)
 
     vertexes = [
@@ -62,15 +62,14 @@ def get_color(value, colormap='viridis'):
 
 def main():
     running = True
-    window.fill(bg_color)
+    window.fill(white)
     vertex_count = 3
     last_point = [0, 0]
     v_index = 0
     frame_count = 0
     erase = False
-    auto_save = True#user_auto_save == "y"
+    auto_save = False#user_auto_save == "y"
     coeff = 1/2
-    render_edges = False
 
     while running:
         # Handle events
@@ -83,9 +82,9 @@ def main():
                 if event.key == pygame.K_p:
                     print(last_point)
 
-        if frame_count % 120 == 0:
+        if frame_count % 500 == 0:
             if (frame_count > 0):
-                vertex_count += 1
+                # vertex_count += 1
                 if auto_save:
                     save_image(vertex_count, coeff, session_id, window, opc=opacity)
 
@@ -93,7 +92,7 @@ def main():
             # coeff += 0.02
             # coeff = opt_r(vertex_count)
             last_point = list(vertexes[0])
-            window.fill(bg_color) # TOHLE SE KLIDNE MUZE SMAZAT A NASTAVIT erase=True, rozdil je ocividny
+            window.fill(white) # TOHLE SE KLIDNE MUZE SMAZAT A NASTAVIT erase=True, rozdil je ocividny
 
             if (frame_count == 0 or True):
                 colors = []
@@ -105,8 +104,8 @@ def main():
                     colors[i].fill(translucent)
 
 
-            vertex_text = font.render(f'Vertex Count: {vertex_count}', True, fg_color)
-            coeff_text = font.render(f'Coefficient: {coeff:.3g}', True, fg_color)
+            vertex_text = font.render(f'Vertex Count: {vertex_count}', True, black)
+            coeff_text = font.render(f'Coefficient: {coeff:.3g}', True, black)
             window.blit(vertex_text, (10, 10))
             window.blit(coeff_text, (10, 27))
     
@@ -114,21 +113,21 @@ def main():
 
 
         if erase:
-            window.fill(bg_color)
+            window.fill(white)
 
 
         # this is just so the images look more to the center
 
         for _ in range(15000):
-            v_index = (v_index + random.randint(0, random.randint(0, vertex_count-1))) % len(vertexes) #################### THE RULE #####################
+            v_index = (v_index + random.randint(1, (vertex_count))) % len(vertexes) #################### THE RULE #####################
             last_point = gen_new_point(last_point, vertexes[v_index], coeff)
+            coeff += 0.4
             window.blit(colors[min(len(colors)-1, v_index)], (int(last_point[0] + width / 2), int(last_point[1] + height / 2 + offset_y)))
 
-        if (render_edges):
-            for i in range(len(vertexes)):
-                pygame.draw.line(window, fg_color,
-                                (vertexes[i][0] + width / 2, vertexes[i][1] + height / 2 + offset_y),
-                                (vertexes[(i + 1) % len(vertexes)][0] + width / 2, vertexes[(i + 1) % len(vertexes)][1] + height / 2 + offset_y))
+        for i in range(len(vertexes)):
+            pygame.draw.line(window, black,
+                             (vertexes[i][0] + width / 2, vertexes[i][1] + height / 2 + offset_y),
+                             (vertexes[(i + 1) % len(vertexes)][0] + width / 2, vertexes[(i + 1) % len(vertexes)][1] + height / 2 + offset_y))
 
         pygame.display.flip()
 

@@ -18,7 +18,7 @@ def save_image(vc, c, session_id, _window, opc = 255):
     
     if not os.path.exists(des_dir):
         os.mkdir(des_dir)
-        content = f"""## Chaos game\n### Session parameters\n\nCoefficient of LERP: r={c}\nSingle point opacity: {opc}/255\n\n*Rule for choosing the next vertex:*\nThe last chosen vertex NEZADANO _(n+NEZADANO)_\n### Images generated"""
+        content = f"""## Chaos game\n### Session parameters\n\nCoefficient of LERP: r={c}\nSingle point opacity: {opc}/255\n\n*Rule for choosing the next vertex:*\nThe last chosen vertex NEZADANO ```(n+NEZADANO)```\n### Images generated"""
         
         with open(md, 'w') as file:
             file.write(content.strip())
