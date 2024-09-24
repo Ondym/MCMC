@@ -1,12 +1,13 @@
 ## Usage of chaos-game-ext.py
 __How to edit the program to try your own configurations__
 
-Tohle je program simulujici chaos game (https://en.wikipedia.org/wiki/Chaos_game), coz je generalizovana verze
-naseho Sierpinskiho trojuhelniku. Jelikoz je mnoho verzi chaos game a zalezi, cim se bude ridit (pocet vertexu,
-koeficient lerpu, pravidlo vybirani vrcholu...), vsechno je na ty strance na Wikipedii.
+This is a program simulating the chaos game (https://en.wikipedia.org/wiki/Chaos_game), which is a generalized version
+of our Sierpinski triangle. Since there are many versions of the chaos game and it depends on various factors - number 
+of vertices, lerp (Linear intERPolation) coefficient, rule for selecting vertices (this one makes the most interesting)...
+You can find all the details on the Wikipedia page.
 
-Muzete se pokusit o nejaky zakladni zmeny parametru, treba ve funkci setup(), nebo o pravidlo vyberu vrcholu na 
-radku 74 (v_index), ale pokud si nejste uplne jisty a nebo chcete aby to bylo/nebylo nejak animovany, urcite doporucuju
-proste to zkopirovat a napsat ChatGPT, protoze tak jsem delal animace ja kdyz jsem je chtel nejak videt. Kdyby jste chteli
-nejakou inspiraci, tak ja jsem se treba koukal jak se to meni s poctem vrcholu, koeficientem lerpu (doporucuju menit
-ho, snizit pocet bodu generovanych v kazdym kole a nastavit erase=False)...
+You can try making some basic changes to the parameters, like in the setup() function, or experiment with the vertex
+selection rule on line 122 (v_index - it is higlightet via a comment). However, if you're not completely sure or if you
+want the animation to be a certain way, I’d definitely recommend just copying the code and asking ChatGPT to modify it.
+If you’re looking for inspiration, I suggest experimenting with the number of vertices, the lerp coefficient (I recommend
+playing around with the colors, reducing the number of points generated in each round, and setting erase=False)...
