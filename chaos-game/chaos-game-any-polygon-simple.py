@@ -21,6 +21,10 @@ vertexes = [(400, 100), (200, 500), (600, 500)]
 points = []
 
 # Function to draw everything
+
+pixel = pygame.Surface((1, 1), pygame.SRCALPHA)
+pixel.fill(BLACK)
+
 def draw():
     window.fill(WHITE)
     
@@ -30,7 +34,8 @@ def draw():
     
     # Draw points
     for point in points:
-        pygame.draw.circle(window, BLACK, point, 1)
+        pygame.draw.circle(window, BLACK, point, 0.99999)
+        window.blit(pixel, point)
 
     pygame.display.flip()
 
@@ -82,7 +87,7 @@ while running:
 
     # Generate new points
     if len(points) < 3*10**5:  # Limit the number of points for performance
-        for _ in range(100):
+        for _ in range(1000):
             points.append(generate_point())
 
     # Draw everything

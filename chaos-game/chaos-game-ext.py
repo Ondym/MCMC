@@ -101,6 +101,7 @@ def main():
                 colors.append(pygame.Surface((1, 1), pygame.SRCALPHA))
                 colors[0].fill(translucent)
                 
+                ##### This changes the color of each generated point to visualize, which vertex was chosen for that particular point #####
                 # for i in range(vertex_count):
                 #     colors.append(pygame.Surface((1, 1), pygame.SRCALPHA))
                 #     C = get_color(i/(vertex_count - 1))
