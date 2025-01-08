@@ -38,7 +38,7 @@ An interesting observation we made was that the energy of a grid with randomly g
 
 While preparing fo the FIHS conference I came along a very visually interesting thing called the _chaos game_. It creates beatiful patterns from randomness. It can be described as a  discrete time Markov chain with continuous state spac (ℝ²). The simplest example is the Sierpinski triangle.
 
-![Image of the Sierpinski triangle, a nested triangle fractal](/chaos-game/gen-imgs/sierpinskis/sierpinski.png)
+![Image of the Sierpinski triangle, a nested triangle fractal](/chaos-game/sierpinskis/sierpinski.png)
 
 You can read about he basics on the [chaos game Wikipedia page](https://en.wikipedia.org/wiki/Chaos_game), but basically the three parameters impacting the final result are:
 
